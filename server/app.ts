@@ -2,7 +2,9 @@ import express, { NextFunction, Request, Response } from "express"
 import cors from 'cors'
 import cookieParser from "cookie-parser"
 import { ErrorMiddleware } from './middleware/error'
+
 import userRouter from './routes/user.route'
+import courseRouter from './routes/course.route'
 
 require("dotenv").config()
 
@@ -22,6 +24,7 @@ app.get("/test", (req: Request, res: Response, next: NextFunction) => {
 
 // Routes
 app.use("/api/v1", userRouter)
+app.use("/api/v1", courseRouter)
 
 // Unknown route
 app.all("*", (req: Request, res: Response, next: NextFunction) => {

@@ -9,6 +9,7 @@ import sendMail from "../utils/sendMail";
 import { accessTokenOptions, refreshTokenOptions, sendToken } from "../utils/jwt";
 import { redis } from "../utils/redis";
 import { getUserById } from "../services/user.service";
+import cloudinary from "cloudinary"
 
 require('dotenv').config()
 
@@ -256,8 +257,9 @@ export const updateUserInfo = CatchAsyncError(async(req: Request, res: Response,
         const userId = req.user?._id
         const user = await userModel.findById(userId)
 
-        //Check if an user already have this email
+        // Update user email if there is a user and it has an existing email
         if(email && user) {
+            //Check if an user already have this email
             const isEmailExist = await userModel.findOne({ email })
             if(isEmailExist) {
                 return next(new ErrorHandler("Email already exists", 400))
@@ -306,6 +308,7 @@ export const updatePassword = CatchAsyncError(async(req: Request, res: Response,
             return next(new ErrorHandler("Invalid user", 400))
         }
 
+        // ComparePassword is comming from user model
         const isPasswordMatch = await user?.comparePassword(oldPassword)
 
         if(!isPasswordMatch) {
@@ -319,6 +322,52 @@ export const updatePassword = CatchAsyncError(async(req: Request, res: Response,
         await redis.set(req.user?._id, JSON.stringify(user))
 
         res.status(201).json({
+            success: true,
+            user
+        })
+    } catch (error: any) {
+        return next(new ErrorHandler(error.message, 400))
+    }
+})
+
+//-------------------------------------------//Update Profile Picture//----------------------------------------//
+interface IUpdateProfilePicture {
+    avatar: string
+}
+
+export const updateProfilePicture = CatchAsyncError(async(req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { avatar } = req.body as IUpdateProfilePicture
+
+        //Get current user
+        const userId = req.user?._id
+        const user = await userModel.findById(userId)
+
+        if(avatar && user) {
+            if(user?.avatar?.public_id) {
+                // If user already have a user image, delete it
+                await cloudinary.v2.uploader.destroy(user?.avatar?.public_id)
+                // Then upload a new image
+                const myCloud = await cloudinary.v2.uploader.upload(avatar, { folder: "avatars", width: 150 })
+                user.avatar = {
+                 public_id: myCloud.public_id,
+                 url: myCloud.secure_url
+                }
+            } else {
+                // Upload a new user image if user dont have one
+               const myCloud = await cloudinary.v2.uploader.upload(avatar, { folder: "avatars", width: 150 })
+               user.avatar = {
+                public_id: myCloud.public_id,
+                url: myCloud.secure_url
+               }
+            }
+        }
+
+        await user?.save()
+
+        await redis.set(userId, JSON.stringify(user))
+
+        res.status(200).json({
             success: true,
             user
         })
