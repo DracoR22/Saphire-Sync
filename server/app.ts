@@ -5,6 +5,8 @@ import { ErrorMiddleware } from './middleware/error'
 
 import userRouter from './routes/user.route'
 import courseRouter from './routes/course.route'
+import orderRouter from './routes/order.route'
+import notificationRouter from "./routes/notification.route"
 
 require("dotenv").config()
 
@@ -25,6 +27,8 @@ app.get("/test", (req: Request, res: Response, next: NextFunction) => {
 // Routes
 app.use("/api/v1", userRouter)
 app.use("/api/v1", courseRouter)
+app.use("/api/v1", orderRouter)
+app.use("/api/v1", notificationRouter)
 
 // Unknown route
 app.all("*", (req: Request, res: Response, next: NextFunction) => {
