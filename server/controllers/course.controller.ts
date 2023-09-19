@@ -2,13 +2,14 @@ import { NextFunction, Request, Response } from "express";
 import { CatchAsyncError } from "../middleware/catchAsyncErrors";
 import ErrorHandler from "../utils/ErrorHandler";
 import cloudinary from 'cloudinary'
-import { createCourse } from "../services/course.service";
+import { createCourse, getAllCoursesService } from "../services/course.service";
 import CourseModel from "../models/course.model";
 import { redis } from "../utils/redis";
 import mongoose from "mongoose";
 import path from "path";
 import ejs from 'ejs'
 import sendMail from "../utils/sendMail";
+import NotificationModel from "../models/notification.model";
 
 //----------------------------------------------//Upload Course//-------------------------------------------//
 export const uploadCourse = CatchAsyncError(async(req: Request, res: Response, next: NextFunction) => {
@@ -179,6 +180,7 @@ export const addQuestion = CatchAsyncError(async(req: Request, res: Response, ne
             return next(new ErrorHandler("Invalid content id", 400))
         }
 
+        // Get the content of a course
         const courseContent = course?.courseData?.find((item: any) => item._id.equals(contentId))
 
         if(!courseContent) {
@@ -194,6 +196,13 @@ export const addQuestion = CatchAsyncError(async(req: Request, res: Response, ne
 
         // Add this question to the course content
         courseContent.questions.push(newQuestion)
+
+        // Send notification to the admin when question is created
+        await NotificationModel.create({
+            user: req.user?._id,
+            title: "New Question Received",
+            message: `You have a new question in ${courseContent.title}`
+        })
 
         // Save the updated course
         await course?.save()
@@ -254,6 +263,11 @@ export const addAnswer = CatchAsyncError(async(req: Request, res: Response, next
         // Create a notification if the current user is the one who created the answer
         if(req.user?._id === question.user._id) {
             // Create a notification
+            await NotificationModel.create({
+                user: req.user?._id,
+                title: "New Question Reply Received",
+                message: `You have a new question reply in ${courseContent.title}`
+            })
         } else {
             // If the user is not who created that answer we are sending an email
             const data = {
@@ -391,5 +405,38 @@ export const addReplyToReview = CatchAsyncError(async(req: Request, res: Respons
         })
     } catch (error: any) {
         return next(new ErrorHandler(error.message, 500))
+    }
+})
+
+//----------------------------------------//Get All Courses --Only Admin//----------------------------------------//
+export const getCourses = CatchAsyncError(async(req: Request, res: Response, next: NextFunction) => {
+    try {
+        getAllCoursesService(res)
+    } catch (error: any) {
+        return next(new ErrorHandler(error.message, 400))
+    }
+})
+
+//-----------------------------------------//Delete Course --Only Admin//---------------------------------------//
+export const deleteCourse = CatchAsyncError(async(req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { id } = req.params
+
+        const course = await CourseModel.findById(id)
+
+        if(!course) {
+            return next(new ErrorHandler("Course not found", 404))
+        }
+
+        await course.deleteOne({id})
+
+        await redis.del(id)
+
+        res.status(200).json({
+            success: true,
+            message: "Course deleted succesfully"
+        })
+    } catch (error: any) {
+        return next(new ErrorHandler(error.message, 400))
     }
 })
