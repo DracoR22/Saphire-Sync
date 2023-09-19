@@ -11,7 +11,7 @@ import ejs from 'ejs'
 import sendMail from "../utils/sendMail";
 import NotificationModel from "../models/notification.model";
 
-//----------------------------------------------//Upload Course//-------------------------------------------//
+//----------------------------------------------//Create Course//-------------------------------------------//
 export const uploadCourse = CatchAsyncError(async(req: Request, res: Response, next: NextFunction) => {
     try {
         // Extract everything from course model
@@ -96,7 +96,8 @@ export const getSingleCourse = CatchAsyncError(async(req: Request, res: Response
           // Get Course Without Including Purchased Only Information
         const course = await CourseModel.findById(req.params.id).select("-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links")
 
-        await redis.set(courseId, JSON.stringify(course))
+        // Remove Course From Redis After 7 Days Of Inactivity
+        await redis.set(courseId, JSON.stringify(course), 'EX', 604800)
 
         res.status(200).json({
             success: true,
