@@ -29,7 +29,7 @@ export const registrationUser = CatchAsyncError(async(req: Request, res: Respons
         const isEmailExist = await userModel.findOne({email})
 
         if(isEmailExist) {
-            return next(new ErrorHandler("Email already exists", 400))
+            return next(new ErrorHandler('Email already exists', 400))
         }
 
         const user: IRegistrationBody = { name, email, password }
