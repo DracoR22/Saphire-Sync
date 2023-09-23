@@ -98,7 +98,8 @@ const Header = ({open, setOpen, activeItem, route, setRoute}: Props) => {
             {user ? (
               <>
                <Link href='/profile'>
-               <Image src={user.avatar || "/profile.jpg"} alt={user.name} width={30} height={30} className="rounded-full cursor-pointer"/>
+               <Image src={user.avatar || user.avatar ? user.avatar.url || user.avatar : "/profile.jpg"} alt={user.name} width={30} height={30} className="w-[30px] h-[30px] rounded-full cursor-pointer"
+               style={{border: activeItem === 4 ? "2px solid #00df9a" : "none"}}/>
                </Link>
               </>
             ) : (

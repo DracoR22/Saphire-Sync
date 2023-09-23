@@ -14,7 +14,7 @@ interface Props {
 const page = (props: Props) => {
 
     const [open, setOpen] = useState(false)
-    const [activeItem, setActiveItem] = useState(0)
+    const [activeItem, setActiveItem] = useState(4)
     const [route, setRoute] = useState("Login")
 
     const { user } = useSelector((state: any) => state.auth)

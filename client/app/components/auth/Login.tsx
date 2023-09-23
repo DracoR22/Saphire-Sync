@@ -9,6 +9,7 @@ import { styles } from "@/app/styles/style"
 import { useLoginMutation } from "@/redux/features/auth/authApi"
 import { toast } from "react-toastify"
 import { signIn } from "next-auth/react"
+import Button from "../Button"
 
 type Props = {
     setRoute: (route: string) => void
@@ -23,6 +24,7 @@ const schema = Yup.object().shape({
 const Login = ({ setRoute, setOpen }: Props) => {
 
   const [show, setShow] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   // Call login mutation
   const [login, {isSuccess, error}] = useLoginMutation()
@@ -35,8 +37,10 @@ const Login = ({ setRoute, setOpen }: Props) => {
     },
     validationSchema: schema,
     onSubmit: async({email, password}) => {
+      setIsLoading(true)
        // login user
        await login({email, password})
+       setIsLoading(false)
     }
   })
 
@@ -93,7 +97,9 @@ const Login = ({ setRoute, setOpen }: Props) => {
             <span className="text-rose-500 pt-2 block">{errors.email}</span>
           )}
           <div className="w-full mt-5">
-            <input type="submit" value="Login" className={`${styles.button}`}/>
+            <Button value="Login" type="submit" className={`${styles.button}`} isLoading={isLoading}>
+              Login
+            </Button>
           </div>
           <br />
           <h5 className="text-center pt-4 font-Poppins text-[14px] text-black dark:text-white">

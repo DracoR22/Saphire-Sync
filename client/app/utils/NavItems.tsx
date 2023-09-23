@@ -31,8 +31,8 @@ const NavItems = ({activeItem, isMobile}: Props) => {
       {navItemsData && navItemsData.map((item, i) => (
         <Link href={`${item.url}`} key={i} passHref>
           <span className={`${activeItem === i 
-        ? "text-[#178582]"
-        : "dark:text-white hover:text-[#178582] dark:hover:text-[#178582] transition text-black"} text-[15px] px-6 font-Poppins font-[400]`}>
+        ? "text-[#00df9a]"
+        : "dark:text-white hover:text-[#00df9a] dark:hover:text-[#00df9a] transition text-black"} text-[15px] px-6 font-Poppins font-[400]`}>
             {item.name}
           </span>
         </Link>
@@ -50,7 +50,7 @@ const NavItems = ({activeItem, isMobile}: Props) => {
             {navItemsData && navItemsData.map((item, i) => (
                  <Link href='/' key={i} passHref>
                  <span className={`${activeItem === i 
-                ? "text-[#178582]"
+                ? "text-[#00df9a]"
                 : "dark:text-white text-black"} block py-5 text-[15px] px-6 font-Poppins font-[400]`}>
                     {item.name}
                  </span>

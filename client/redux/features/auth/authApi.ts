@@ -10,7 +10,7 @@ type RegistrationData = {}
 
 export const authApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        // endpoints here
+        // REGISTER USER
         register: builder.mutation<RegistrationResponse, RegistrationData>({
             query: (data) => ({
                 url: "registration",
@@ -31,6 +31,7 @@ export const authApi = apiSlice.injectEndpoints({
                 }
             }
         }),
+        // ACTIVATE USER
         activation: builder.mutation({
             query: ({ activation_token, activation_code }) => ({
                 url: "activate-user",
@@ -41,6 +42,7 @@ export const authApi = apiSlice.injectEndpoints({
                 }
             })
         }),
+        // LOGIN USER
         login: builder.mutation({
             query:({ email, password }) => ({
                 url: "login",
@@ -56,7 +58,7 @@ export const authApi = apiSlice.injectEndpoints({
                     const result = await queryFulfilled
                     dispatch(
                         userLoggedIn({
-                            accessToken: result.data.activationToken,
+                            accessToken: result.data.accessToken,
                             user: result.data.user
                         })
                     )
@@ -65,6 +67,7 @@ export const authApi = apiSlice.injectEndpoints({
                 }
             }
         }),
+        // SOCIAL AUTHENTICATION
         socialAuth: builder.mutation({
             query:({ email, name, avatar }) => ({
                 url: "social-auth",
@@ -90,6 +93,7 @@ export const authApi = apiSlice.injectEndpoints({
                 }
             }
         }),
+        // LOGOUT USER
         logOut: builder.query({
             query:() => ({
                 url: "logout",

@@ -5,7 +5,7 @@ import Image from "next/image"
 const Hero = () => {
   return (
     <div>
-      <div className="min-h-screen text-black dark:text-white">
+      <div className="h-screen text-black dark:text-white">
         <div className="flex justify-center flex-col pt-[50px] px-16">
             <div className="grid md:grid-cols-2 gap-6">
            <div className="pt-[50px]">
@@ -16,7 +16,7 @@ const Hero = () => {
               Our mission is to make learning accessible, engaging, and tailored to your unique journey.
             </h2>
             <div className="flex justify-center">
-               <button className="bg-[#178582] hover:bg-[#3b9693] transition font-bold p-2.5 px-6 text-white rounded-full">
+               <button className="bg-[#00df9a] hover:bg-[#3b9693] transition font-bold p-2.5 px-6 text-white rounded-full">
                  Explore Courses
                </button>
             </div>

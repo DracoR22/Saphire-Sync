@@ -9,6 +9,7 @@ import { styles } from "@/app/styles/style"
 import { useRegisterMutation } from "@/redux/features/auth/authApi"
 import { toast } from "react-toastify"
 import { signIn } from "next-auth/react"
+import Button from "../Button"
 
 type Props = {
     setRoute: (route: string) => void
@@ -23,6 +24,7 @@ const schema = Yup.object().shape({
 const SignUp = ({ setRoute }: Props) => {
 
   const [show, setShow] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   // Call register mutation
   const [register, {data, error, isSuccess}] = useRegisterMutation()
@@ -54,8 +56,10 @@ const SignUp = ({ setRoute }: Props) => {
         const data = {
           name, email, password
         }
+        setIsLoading(true)
         // Register user
         await register(data)
+        setIsLoading(false)
     }
   })
 
@@ -110,7 +114,9 @@ const SignUp = ({ setRoute }: Props) => {
             <span className="text-rose-500 pt-2 block">{errors.email}</span>
           )}
           <div className="w-full mt-5">
-            <input type="submit" value="Sign Up" className={`${styles.button}`}/>
+            <Button value="Sign Up" type="submit" className={`${styles.button}`} isLoading={isLoading}>
+              Login
+            </Button>
           </div>
           <br />
           <h5 className="text-center pt-4 font-Poppins text-[14px] text-black dark:text-white">

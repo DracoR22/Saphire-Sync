@@ -260,17 +260,6 @@ export const updateUserInfo = CatchAsyncError(async(req: Request, res: Response,
         const userId = req.user?._id
         const user = await userModel.findById(userId)
 
-        // Update user email if there is a user and it has an existing email
-        if(email && user) {
-            //Check if an user already have this email
-            const isEmailExist = await userModel.findOne({ email })
-            if(isEmailExist) {
-                return next(new ErrorHandler("Email already exists", 400))
-            }
-            //Update user email
-           user.email = email
-        }
-
         //Allowing users to have the same name
         if(name && user) {
             //Update user name
