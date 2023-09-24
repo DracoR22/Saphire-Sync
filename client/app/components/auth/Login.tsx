@@ -14,6 +14,7 @@ import Button from "../Button"
 type Props = {
     setRoute: (route: string) => void
     setOpen: (open: boolean) => void
+    refetch:any;
 }
 
 const schema = Yup.object().shape({
@@ -21,13 +22,13 @@ const schema = Yup.object().shape({
     password: Yup.string().required("Please enter your password").min(6)
 })
 
-const Login = ({ setRoute, setOpen }: Props) => {
+const Login = ({ setRoute, setOpen, refetch }: Props) => {
 
   const [show, setShow] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
   // Call login mutation
-  const [login, {isSuccess, error}] = useLoginMutation()
+  const [login, { isSuccess, error }] = useLoginMutation()
 
    // Create and submit our form
   const formik = useFormik({
@@ -47,8 +48,9 @@ const Login = ({ setRoute, setOpen }: Props) => {
   // Handle api errors and success
   useEffect(() => {
    if(isSuccess) {
-    toast.success("Login succesfully!")
+    toast.success("Logged In Succesfully!")
     setOpen(false)
+    refetch()
    }
    if(error) {
     if ("data" in error) {

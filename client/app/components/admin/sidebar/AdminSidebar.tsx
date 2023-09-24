@@ -107,7 +107,7 @@ const Sidebar = () => {
           {/* LOGO AND MENU ICON */}
           <MenuItem
             onClick={() => setIsCollapsed(!isCollapsed)}
-            icon={isCollapsed ? <ArrowForwardIosIcon /> : undefined}
+            icon={isCollapsed ? <ArrowForwardIosIcon className="dark:text-[#BFA181]"/> : undefined}
             style={{
               margin: "10px 0 20px 0",
             }}
@@ -125,7 +125,7 @@ const Sidebar = () => {
                 </h3>
                </Link>
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)} className="inline-block">
-                  <ArrowBackIosIcon className="text-black dark:text-[#ffffffc1]" />
+                  <ArrowBackIosIcon className="text-black dark:text-[#BFA181]" />
                 </IconButton>
               </Box>
             )}

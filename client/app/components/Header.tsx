@@ -14,6 +14,7 @@ import { useSelector } from "react-redux"
 import { useSession } from 'next-auth/react'
 import { useLogOutQuery, useSocialAuthMutation } from "@/redux/features/auth/authApi"
 import { toast } from "react-toastify"
+import { useLoadUserQuery } from "@/redux/features/api/apiSlice"
 
 type Props = {
     open: boolean
@@ -27,6 +28,7 @@ const Header = ({open, setOpen, activeItem, route, setRoute}: Props) => {
 
   const [active, setActive] = useState(false)
   const [openSidebar, setOpenSidebar] = useState(false)
+  const {data:userData, isLoading, refetch} = useLoadUserQuery(undefined,{});
   const [logout, setLogout] = useState(false)
 
   // Get User
@@ -42,22 +44,28 @@ const Header = ({open, setOpen, activeItem, route, setRoute}: Props) => {
   })
 
   useEffect(() => {
-    if(!user) {
-      if(data) {
-        socialAuth({email: data.user?.email, name: data.user?.name, avatar: data.user?.image})
+    if(!isLoading){
+      if (!userData) {
+        if (data) {
+          socialAuth({
+            email: data?.user?.email,
+            name: data?.user?.name,
+            avatar: data.user?.image,
+          });
+          refetch();
+        }
+      }
+      if(data === null){
+        if(isSuccess){
+          toast.success("Logged In Successfully");
+        }
+      }
+      if(data === null && !isLoading && !userData){
+          setLogout(true);
       }
     }
-    if(data === null) {
-      if(isSuccess) {
-        toast.success("Logged In Succesfully!")
-      }
-    }
+  }, [data, userData,isLoading]);
 
-    if(data === null) {
-        setLogout(true)
-    }
-  
-  }, [data, user])
 
   if(typeof window !== 'undefined') {
     window.addEventListener("scroll", () => {
@@ -138,7 +146,7 @@ const Header = ({open, setOpen, activeItem, route, setRoute}: Props) => {
         <>
          {open && (
           <CustomModal open={open} setOpen={setOpen} setRoute={setRoute} activeItem={activeItem} 
-          Component={Login}/>
+          Component={Login} refetch={refetch}/>
          )}
         </>
       )}
@@ -147,7 +155,7 @@ const Header = ({open, setOpen, activeItem, route, setRoute}: Props) => {
         <>
          {open && (
           <CustomModal open={open} setOpen={setOpen} setRoute={setRoute} activeItem={activeItem} 
-          Component={Verification}/>
+          Component={Verification} refetch={refetch}/>
          )}
         </>
       )}
