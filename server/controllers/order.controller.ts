@@ -9,11 +9,30 @@ import ejs from "ejs"
 import sendMail from "../utils/sendMail";
 import NotificationModel from "../models/notification.model";
 import { getAllOrdersService, newOrder } from "../services/order.service";
+import { redis } from "../utils/redis";
+
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 // ---------------------------------------------//Create Order//---------------------------------------------//
 export const createOrder = CatchAsyncError(async(req: Request, res: Response, next: NextFunction) => {
     try {
         const { courseId, payment_info } = req.body as IOrder
+
+        // Validate Payment Info
+        if(payment_info) {
+            if("id" in payment_info) {
+                const paymentIntentId = payment_info.id;
+                const paymentIntent = await stripe.paymentIntents.retrieve(
+                    paymentIntentId
+                )
+
+                if(paymentIntent.status !== "succeeded") {
+                    return next(new ErrorHandler("Payment not authorized!", 400));
+                
+                }
+            }
+        }
+
         // Get all the user information
         const user = await userModel.findById(req.user?._id)
 
@@ -68,6 +87,8 @@ export const createOrder = CatchAsyncError(async(req: Request, res: Response, ne
 
         // Update user with its new course
         user?.courses.push(course?._id)
+
+        await redis.set(req.user?._id, JSON.stringify(user))
 
         await user?.save()
 

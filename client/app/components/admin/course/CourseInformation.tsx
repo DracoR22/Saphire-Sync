@@ -1,8 +1,9 @@
 'use client'
 
 import { styles } from "@/app/styles/style";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../../Button";
+import { useGetHeroDataQuery } from "@/redux/features/layout/layoutApi";
 
 interface Props {
     courseInfo: any;
@@ -13,8 +14,21 @@ interface Props {
 
 const CourseInformation = ({courseInfo, setCourseInfo, active, setActive}: Props) => {
 
+     // DRAG AND DROP STATE
     const [dragging, setDragging] = useState(false);
+
+    // CATEGORIES STATE
     const [categories, setCategories] = useState([]);
+
+    // GET CATEGORIES FROM HERO DATA QUERY
+    const { data } = useGetHeroDataQuery("Categories", {});
+
+    useEffect(() => {
+      if (data) {
+        setCategories(data.layout.categories);
+      }
+    }, [data]);
+  
 
     // UPLOAD COURSE THUMBNAIL
     const handleFileChange = (e: any) => {
@@ -58,6 +72,7 @@ const CourseInformation = ({courseInfo, setCourseInfo, active, setActive}: Props
         }
       };
 
+     // GO TO NEXT STEP
     const handleSubmit = (e: any) => {
         e.preventDefault();
         setActive(active + 1);
@@ -112,7 +127,7 @@ const CourseInformation = ({courseInfo, setCourseInfo, active, setActive}: Props
               id="tags" placeholder="Give your course some tags" className={`${styles.input}`}/>
               </div>
                 {/* COURSE CATEGORIES */}
-              {/* <div className="w-[50%]">
+              <div className="w-[50%]">
               <label className={`${styles.label} w-[50%]`}>
               Course Categories
               </label>
@@ -125,15 +140,15 @@ const CourseInformation = ({courseInfo, setCourseInfo, active, setActive}: Props
                 setCourseInfo({ ...courseInfo, categories: e.target.value })
               }
             >
-              <option value="">Select Category</option>
+              <option value="" className="dark:text-black">Select Category</option>
               {categories &&
                 categories.map((item: any) => (
-                  <option value={item.title} key={item._id}>
+                  <option value={item.title} key={item._id} className="dark:text-black">
                     {item.title}
                   </option>
                 ))}
             </select>
-              </div> */}
+              </div>
             </div>
             <br />
               {/* COURSE LEVEL */}

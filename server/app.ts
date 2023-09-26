@@ -9,6 +9,7 @@ import orderRouter from './routes/order.route'
 import notificationRouter from "./routes/notification.route"
 import analyticsRouter from "./routes/analytics.route"
 import layoutRouter from "./routes/layout.route"
+import paymentRouter from "./routes/payment.route"
 
 require("dotenv").config()
 
@@ -33,13 +34,15 @@ app.use("/api/v1", orderRouter)
 app.use("/api/v1", notificationRouter)
 app.use("/api/v1", analyticsRouter)
 app.use("/api/v1", layoutRouter)
+app.use("/api/v1", paymentRouter)
 
-// Unknown route
+// Unknown Route
 app.all("*", (req: Request, res: Response, next: NextFunction) => {
     const err = new Error(`Route ${req.originalUrl} not found`) as any
     err.statusCode = 404
     next(err)
 })
 
+// Middleware Calls
 app.use(ErrorMiddleware)
 

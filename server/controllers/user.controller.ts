@@ -389,8 +389,19 @@ export const getAllUsers = CatchAsyncError(async(req: Request, res: Response, ne
 //---------------------------------------//Update User Role --Only Admin//-------------------------------------//
 export const updateUserRole = CatchAsyncError(async(req: Request, res: Response, next: NextFunction) => {
     try {
-        const { id, role } = req.body
-        updateUserRoleService(res, id, role)
+        const { email, role } = req.body;
+
+        // Check if that user exists to update its role
+        const isUserExist = await userModel.findOne({ email });
+        if (isUserExist) {
+          const id = isUserExist._id;
+          updateUserRoleService(res,id, role);
+        } else {
+          res.status(400).json({
+            success: false,
+            message: "User not found",
+          });
+        }
     } catch (error: any) {
         return next(new ErrorHandler(error.message, 400))
     }
@@ -399,14 +410,17 @@ export const updateUserRole = CatchAsyncError(async(req: Request, res: Response,
 //-----------------------------------------//Delete User --Only Admin//---------------------------------------//
 export const deleteUser = CatchAsyncError(async(req: Request, res: Response, next: NextFunction) => {
     try {
+        // Get Params
         const { id } = req.params
 
+        // Get The User
         const user = await userModel.findById(id)
 
         if(!user) {
             return next(new ErrorHandler("User not found", 404))
         }
 
+        // Delete User
         await user.deleteOne({id})
 
         await redis.del(id)

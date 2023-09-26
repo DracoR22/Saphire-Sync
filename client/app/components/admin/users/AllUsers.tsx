@@ -23,8 +23,7 @@ const AllCourses: FC<Props> = ({ isTeam }) => {
   const [userId, setUserId] = useState("");
 
 // UPDATE USER ROLE MUTATION
-  const [updateUserRole, { error: updateError, isSuccess }] =
-    useUpdateUserRoleMutation();
+  const [updateUserRole, { error: updateError, isSuccess }] = useUpdateUserRoleMutation();
 
 // GET ALL USERS QUERY
   const { isLoading, data, refetch } = useGetAllUsersQuery({}, { refetchOnMountOrArgChange: true });
@@ -107,9 +106,9 @@ const AllCourses: FC<Props> = ({ isTeam }) => {
 
   const rows: any = [];
 
+  // CHECK WHICH USERS ARE ADMINS
   if (isTeam) {
-    const newData =
-      data && data.users.filter((item: any) => item.role === "admin");
+    const newData = data && data.users.filter((item: any) => item.role === "admin");
 
     newData &&
       newData.forEach((item: any) => {

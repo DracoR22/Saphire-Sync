@@ -86,7 +86,7 @@ const Header = ({open, setOpen, activeItem, route, setRoute}: Props) => {
   return (
     <div className="w-full relative">
       <div className={`${active ? `dark:bg-opacity-50 dark:bg-gradient-to-b dark:from-gray-900
-       dark:to-black fixed top-0 left-0 w-full h-[80px] z-[80] border-b dark:border-[#BFA181]
+       dark:to-black bg-white fixed top-0 left-0 w-full h-[80px] z-[80] border-b dark:border-[#BFA181]
         shadow-xl transition duration-500` :
          `w-full border-b dark:border-[#BFA181] h-[80px] z-[80] dark:shadow`}`}>
         <div className="w-[95%] 800px:w-[92%] m-auto py-2 h-full">

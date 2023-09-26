@@ -4,6 +4,10 @@ import { useState } from "react"
 import Header from "./components/Header"
 import Heading from "./utils/Heading"
 import Hero from "./components/Hero"
+import Courses from "./components/Courses"
+import Reviews from "./components/Reviews"
+import FAQ from "./components/FAQ/FAQ"
+import Footer from "./components/Footer"
 
 interface Props {
   
@@ -23,6 +27,10 @@ const Home = () => {
       keywords="Programming, Redux..."/>
       <Header open={open} setOpen={setOpen} activeItem={activeItem} setRoute={setRoute} route={route}/>
       <Hero/>
+      <Courses/>
+      <Reviews/>
+      <FAQ/>
+      <Footer/>
     </div>
   )
 }

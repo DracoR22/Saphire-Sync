@@ -4,7 +4,6 @@ import AdminProtected from "@/app/hooks/adminProtected"
 import Heading from "@/app/utils/Heading"
 import AdminSidebar from "@/app/components/admin/sidebar/AdminSidebar"
 import DashboardHero from "@/app/components/admin/DashboardHero"
-import AllCourses from "@/app/components/admin/course/AllCourses"
 import AllUsers from "@/app/components/admin/users/AllUsers"
 
 interface Props {

@@ -17,7 +17,7 @@ export const createLayout = CatchAsyncError(async(req: Request, res: Response, n
 
         //Create Banner
         if(type === "Banner") {
-            const { image, title, subtitle } = req.body
+            const { image, title, subTitle } = req.body
 
              // Upload Banner Image
             const myCloud = await cloudinary.v2.uploader.upload(image, {
@@ -26,12 +26,14 @@ export const createLayout = CatchAsyncError(async(req: Request, res: Response, n
 
             const banner = {
                 type: "Banner",
-                image: {
-                    public_id: myCloud.public_id,
-                    url: myCloud.secure_url
-                },
-                title,
-                subtitle
+                banner: {
+                    image: {
+                        public_id: myCloud.public_id,
+                        url: myCloud.secure_url
+                    },
+                    title,
+                    subTitle
+                }
             }
 
             await LayoutModel.create(banner)
@@ -79,30 +81,33 @@ export const editLayout = CatchAsyncError(async(req: Request, res: Response, nex
         const { type } = req.body
 
         //Update Banner
-        if(type === "Banner") {
-            const bannerData: any = await LayoutModel.findOne({ type: "Banner" })
-            const { image, title, subtitle } = req.body
-
-            if(bannerData) {
-                await cloudinary.v2.uploader.destroy(bannerData.image.public_id)
-            }
-
-            const myCloud = await cloudinary.v2.uploader.upload(image, {
-                folder: "layout"
-            })
-
+        if (type === "Banner") {
+            const bannerData: any = await LayoutModel.findOne({ type: "Banner" });
+    
+            const { image, title, subTitle } = req.body;
+    
+            const data = image.startsWith("https")
+              ? bannerData
+              : await cloudinary.v2.uploader.upload(image, {
+                  folder: "layout",
+                });
+    
             const banner = {
-                type: "Banner",
-                image: {
-                    public_id: myCloud.public_id,
-                    url: myCloud.secure_url
-                },
-                title,
-                subtitle
-            }
-
-            await LayoutModel.findByIdAndUpdate(bannerData._id, { banner })
-        }
+              type: "Banner",
+              image: {
+                public_id: image.startsWith("https")
+                  ? bannerData.banner.image.public_id
+                  : data?.public_id,
+                url: image.startsWith("https")
+                  ? bannerData.banner.image.url
+                  : data?.secure_url,
+              },
+              title,
+              subTitle,
+            };
+    
+            await LayoutModel.findByIdAndUpdate(bannerData._id, { banner });
+          }
 
         // Update FAQ
         if(type === "FAQ") {
@@ -145,7 +150,7 @@ export const editLayout = CatchAsyncError(async(req: Request, res: Response, nex
 //---------------------------------------------//Get Layout By Type//------------------------------------------//
 export const getLayoutByType = CatchAsyncError(async(req: Request, res: Response, next: NextFunction) => {
     try {
-        const { type } = req.body
+        const { type } = req.params
 
         const layout = await LayoutModel.findOne({ type })
 

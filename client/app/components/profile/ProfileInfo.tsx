@@ -18,14 +18,18 @@ const ProfileInfo = ({ avatar, user }: Props) => {
 
 const [isLoading, setIsLoading] = useState(false)
 
+// NAME STATE
 const [name, setName] = useState(user && user.name)
-const [updateAvatar, { isSuccess, error }] = useUpdateAvatarMutation()
 
-const [loadUser, setLoadUser] = useState(false)
-const {} = useLoadUserQuery(undefined, {skip: loadUser ? false : true})
+// GET UPDATE AVATAR MUTATION
+const [updateAvatar, { isSuccess, error }] = useUpdateAvatarMutation()
 
 // GET THE UPDATE USER MUTATION
 const [editProfile, {isSuccess: success, error: updateError}] = useEditProfileMutation()
+
+// GET LOAD USER QUERY
+const [loadUser, setLoadUser] = useState(false)
+const {} = useLoadUserQuery(undefined, {skip: loadUser ? false : true})
 
 // UPDATE USER AVATAR
 const imageHandler = async (e: any) => {
@@ -35,9 +39,7 @@ const imageHandler = async (e: any) => {
   fileReader.onload = () => {
     if(fileReader.readyState === 2) {
       const avatar = fileReader.result
-       updateAvatar(
-         avatar,
-       )
+       updateAvatar(avatar)
     }
   }
   fileReader.readAsDataURL(e.target.files[0])
@@ -45,7 +47,7 @@ const imageHandler = async (e: any) => {
 
 // HANDLE SUCCESS AND ERRORS  
 useEffect(() => {
-  if(isSuccess ||success) {
+  if(isSuccess) {
      setLoadUser(true)
   }
   if(error || updateError) {
@@ -54,17 +56,16 @@ useEffect(() => {
 
   if(success) {
     toast.success('Profile updated succesfully!')
+    setLoadUser(true)
   }
 }, [isSuccess, success, updateError, error])
 
-// UPDATE USER INFORMATION
+// UPDATE USER NAME
 const handleSubmit = async (e: any) => {
   setIsLoading(true)
     e.preventDefault()
     if(name !== "") {
-     await editProfile({
-        name: name,
-      })
+     await editProfile({name: name})
     }
     setIsLoading(false)
 }
@@ -75,8 +76,10 @@ const handleSubmit = async (e: any) => {
                 {/*SEE AND CHANGE USER AVATAR */}
               <Image src={user.avatar || avatar ? user.avatar.url || avatar : "/profile.jpg"}
               alt="" className="w-[120px] h-[120px] cursor-pointer border-[3px] border-[#37a39a] rounded-full" width={120} height={120}/>
+
               <input type="file" name="" id="avatar" className="hidden" onChange={imageHandler}
                accept="image/png,image/jpg,image/jpeg,image/webp"/>
+
                <label htmlFor="avatar">
                  <div className="w-[30px] h-[30px] bg-slate-900 rounded-full absolute bottom-2 right-2 flex
                  items-center justify-center cursor-pointer">

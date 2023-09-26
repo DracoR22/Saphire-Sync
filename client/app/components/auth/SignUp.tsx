@@ -115,7 +115,7 @@ const SignUp = ({ setRoute }: Props) => {
           )}
           <div className="w-full mt-5">
             <Button value="Sign Up" type="submit" className={`${styles.button}`} isLoading={isLoading}>
-              Login
+              Register
             </Button>
           </div>
           <br />

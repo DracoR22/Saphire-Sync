@@ -14,17 +14,17 @@ interface Props {
 
 const Profile = ({ user }: Props) => {
 
+    // GET STATES 
    const [scroll, setScroll] = useState(false)
    const [avatar, setAvatar] = useState(null)
    const [logout, setLogout] = useState(false)
 
-   //Get Logout Function
-   const {} = useLogOutQuery(undefined, {
-    skip: !logout ? true : false
-   })
+   // GET LOGOUT MUTATION
+   const {} = useLogOutQuery(undefined, { skip: !logout ? true : false })
 
    const [active, setActive] = useState(1)
 
+   // LOGOUT USER
    const logOutHandler = async () => {
        setLogout(true)
        await signOut()
