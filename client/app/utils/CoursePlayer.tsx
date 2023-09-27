@@ -16,7 +16,7 @@ const CoursePlayer = ({videoUrl, title}: Props) => {
   })
 
   useEffect(() => {
-    axios.post(`http://localhost:8000/api/v1/getVdoCipherOTP`, {
+    axios.post(`https://saphire-sync.onrender.com/api/v1/getVdoCipherOTP`, {
       videoId: videoUrl,
     })
     .then((res) => {
