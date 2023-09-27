@@ -20,7 +20,7 @@ const Page = (props: Props) => {
     const { user } = useSelector((state: any) => state.auth)
 
     return (
-        <div>
+        <div className="min-h-screen">
             <Protected>
             <Heading 
             title={`${user.name} - Sapphire`}
