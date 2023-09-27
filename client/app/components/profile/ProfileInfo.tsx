@@ -8,6 +8,7 @@ import { useEditProfileMutation, useUpdateAvatarMutation } from "@/redux/feature
 import { useLoadUserQuery } from "@/redux/features/api/apiSlice"
 import Button from "../Button"
 import { toast } from 'react-toastify'
+import { useRouter } from "next/navigation"
 
 interface Props {
     avatar: string | null
@@ -29,7 +30,7 @@ const [editProfile, {isSuccess: success, error: updateError}] = useEditProfileMu
 
 // GET LOAD USER QUERY
 const [loadUser, setLoadUser] = useState(false)
-const {} = useLoadUserQuery(undefined, {skip: loadUser ? false : true})
+const {refetch} = useLoadUserQuery(undefined, {refetchOnMountOrArgChange: true})
 
 // UPDATE USER AVATAR
 const imageHandler = async (e: any) => {
@@ -49,6 +50,7 @@ const imageHandler = async (e: any) => {
 useEffect(() => {
   if(isSuccess) {
      setLoadUser(true)
+     refetch()
   }
   if(error || updateError) {
     console.log(error)

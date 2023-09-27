@@ -1,5 +1,6 @@
 'use client'
 
+import Footer from "@/app/components/Footer"
 import Loader from "@/app/components/Loader"
 import CourseContent from "@/app/components/course/CourseContent"
 import { useLoadUserQuery } from "@/redux/features/api/apiSlice"
@@ -35,6 +36,7 @@ const Page = ({params}: {params: { id: string }}) => {
       ) : (
         <div>
           <CourseContent id={id} user={data.user}/>
+          <Footer/>
         </div>
       )}
     </>

@@ -14,7 +14,7 @@ interface Props {
 const CourseContent = ({ id, user }: Props) => {
 
   // Get Course Content Query
-  const { data: contentData, isLoading, refetch } = useGetCourseContentQuery(id)
+  const { data: contentData, isLoading, refetch } = useGetCourseContentQuery(id, { refetchOnMountOrArgChange: true })
 
   const data = contentData?.content
   const [open, setOpen] = useState(false);
@@ -35,7 +35,7 @@ const CourseContent = ({ id, user }: Props) => {
                  description="Saphire Sync is a platform for students to learn and get help from teachers"
                  keywords={data[activeVideo]?.tags}/>
                  <div className='col-span-7'>
-                   <CourseContentMedia data={data} id={id} activeVideo={activeVideo} setActiveVideo={setActiveVideo} user={user}/>
+                   <CourseContentMedia data={data} id={id} activeVideo={activeVideo} setActiveVideo={setActiveVideo} user={user} refetch={refetch}/>
                  </div>
                  <div className="hidden 800px:block 800px:col-span-3">
                   <CourseContentList setActiveVideo={setActiveVideo} data={data} activeVideo={activeVideo}/>

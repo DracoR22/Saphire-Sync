@@ -136,10 +136,10 @@ const CourseDetails = ({data, clientSecret, stripePromise, setRoute, setOpen: op
                   <div className="w-full pb-4" key={index}>
                     <div className="flex">
                       <div className="w-[50px] h-[50px]">
-                        {/* <Image src={item.user.avatar ? item.user.avatar.url
-                        : "https://res.cloudinary.com/dshp9jnuy/image/upload/v1665822253/avatars/nrxsg8sd9iy10bbsoenn.png"}
+                        <Image src={item.user.avatar ? item.user.avatar.url
+                        : "/profile.jpg"}
                           width={50} height={50} alt="" className="w-[50px] h-[50px] rounded-full object-cover"
-                        /> */}
+                        />
                       </div>
                       <div className="hidden 800px:block pl-2">
                         <div className="flex items-center">
@@ -165,9 +165,9 @@ const CourseDetails = ({data, clientSecret, stripePromise, setRoute, setOpen: op
                     {item.commentReplies.map((i: any, index: number) => (
                       <div className="w-full flex 800px:ml-16 my-5" key={index}>
                         <div className="w-[50px] h-[50px]">
-                          {/* <Image src={i.user.avatar ? i.user.avatar.url
-                            : "https://res.cloudinary.com/dshp9jnuy/image/upload/v1665822253/avatars/nrxsg8sd9iy10bbsoenn.png" }
-                            width={50} height={50} alt="" className="w-[50px] h-[50px] rounded-full object-cover"/> */}
+                          <Image src={i.user.avatar ? i.user.avatar.url
+                            : "/profile.jpg" }
+                            width={50} height={50} alt="" className="w-[50px] h-[50px] rounded-full object-cover"/>
                         </div>
                         <div className="pl-2">
                           <div className="flex items-center">
