@@ -35,11 +35,12 @@ const Hero = () => {
            <h1 className="text-3xl lg:text-4xl xl:text-5xl font-[700]">
               {data?.layout?.banner?.title}
             </h1>
-             <h2 className="my-6 text-base xl:text-lg text-[#BFA181]">
+             <h2 className="my-8 text-base xl:text-lg text-[#BFA181]">
              {data?.layout?.banner?.subTitle}
             </h2>
-            <div className="flex justify-center">
-               <button className="bg-[#00df9a] hover:bg-[#3b9693] transition text-lg font-bold p-3 px-6 text-white rounded-full">
+            <div className="flex justify-center mt-2">
+               <button onClick={() => router.push('/courses')}
+                className="bg-[#00df9a] hover:bg-[#3b9693] transition text-lg font-bold p-3 px-6 text-white rounded-full">
                  Explore Courses
                </button>
                {/* SEARCH BAR */}

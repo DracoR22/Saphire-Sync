@@ -6,10 +6,15 @@ import { useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { toast } from "react-toastify";
 
+// Socket IO
+import socketIO from "socket.io-client";
+const ENDPOINT = process.env.NEXT_PUBLIC_SOCKET_SERVER_URI || "";
+const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
+
 interface Props {
   setOpen: any;
   data: any;
-  user:any;
+  user: any;
   refetch:any;
 }
 
@@ -49,11 +54,12 @@ const CheckOutForm = ({setOpen, data, user, refetch}: Props) => {
      refetch();
      toast.success('Your order has been succesful!')
 
-    //  socketId.emit("notification", {
-    //     title: "New Order",
-    //     message: `You have a new order from ${data.name}`,
-    //     userId: user._id,
-    //  });
+     // Create Notification Socket
+     socketId.emit("notification", {
+        title: "New Order",
+        message: `You have a new order from ${data.name}`,
+        userId: user._id,
+     });
   
      redirect(`/course-access/${data._id}`);
     }

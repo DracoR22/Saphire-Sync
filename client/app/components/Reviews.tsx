@@ -41,7 +41,7 @@ export const reviews = [
       avatar: "https://randomuser.me/api/portraits/women/4.jpg",
       profession: "Full stack web developer | Canada",
       comment:
-      "Join Sappire! Sappire focuses on practical applications rather than just teaching the theory behind programming languages or frameworks. I took a lesson on creating a web marketplace using React JS, and it was very helpful in teaching me the different stages involved in creating a project from start to finish. Overall, I highly recommend Becodemy to anyone looking to improve their programming skills and build practical projects. Becodemy is a great resource that will help you take your skills to the next level.",
+      "Join Sappire! Sappire focuses on practical applications rather than just teaching the theory behind programming languages or frameworks. I took a lesson on creating a web marketplace using React JS, and it was very helpful in teaching me the different stages involved in creating a project from start to finish. Overall, I highly recommend Sapphire Sync to anyone looking to improve their programming skills and build practical projects. Sapphire Sync is a great resource that will help you take your skills to the next level.",
   },
   ];
 

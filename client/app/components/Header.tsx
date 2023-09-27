@@ -106,7 +106,7 @@ const Header = ({open, setOpen, activeItem, route, setRoute}: Props) => {
             {user ? (
               <>
                <Link href='/profile'>
-               <Image src={user.avatar || user.avatar ? user.avatar.url || user.avatar : "/profile.jpg"} alt={user.name} width={30} height={30} className="w-[30px] h-[30px] rounded-full cursor-pointer"
+               <Image src={user.avatar || user.avatar ? user.avatar.url || user.avatar : "/profile.jpg"} alt={user.name} width={30} height={30} className="w-[30px] h-[30px] rounded-full object-cover hidden 800px:block cursor-pointer"
                style={{border: activeItem === 4 ? "2px solid #00df9a" : "none"}}/>
                </Link>
               </>
@@ -123,8 +123,17 @@ const Header = ({open, setOpen, activeItem, route, setRoute}: Props) => {
             onClick={handleClose} id="screen">
               <div className="w-[70%] fixed z-[999999999] h-screen bg-white dark:bg-gray-900 top-0 right-0">
                 <NavItems activeItem={activeItem} isMobile={true}/>
-                <HiOutlineUserCircle size={25} className="cursor-pointer ml-5 my-2 dark:text-white text-black"
+                {user ? (
+              <>
+               <Link href='/profile'>
+               <Image src={user.avatar || user.avatar ? user.avatar.url || user.avatar : "/profile.jpg"} alt={user.name} width={30} height={30} className="w-[30px] h-[30px] rounded-full object-cover cursor-pointer ml-[20px]"
+               style={{border: activeItem === 4 ? "2px solid #00df9a" : "none"}}/>
+               </Link>
+              </>
+            ) : (
+              <HiOutlineUserCircle size={25} className="cursor-pointer dark:text-white text-black hidden 800px:block"
               onClick={() => setOpen(true)}/>
+            )}
               <br />
               <br />
               <p className="text-[16px] px-2 pl-5 text-black dark:text-white">

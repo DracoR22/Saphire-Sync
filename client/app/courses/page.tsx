@@ -55,10 +55,10 @@ const Page = (props: Props) => {
             setOpen={setOpen}
             activeItem={1}
           />
-          <div className="w-[95%] 800px:w-[85%] m-auto min-h-[70vh]">
+          <div className="w-[95%] 800px:w-[85%] m-auto h-[120vh]">
             <Heading
-              title={"All courses - Elearning"}
-              description={"Elearning is a programming community."}
+              title={"All courses - Sapphire"}
+              description={"Saphire Sync is a platform for students to learn and get help from teachers"}
               keywords={
                 "programming community, coding skills, expert insights, collaboration, growth"
               }
@@ -67,7 +67,7 @@ const Page = (props: Props) => {
             <div className="w-full flex items-center flex-wrap">
               <div
                 className={`h-[35px] ${
-                  category === "All" ? "bg-green-600" : "bg-[#00df9a]"
+                  category === "All" ? "bg-green-500" : "bg-[#00df9a]"
                 } m-3 px-3 rounded-[30px] flex items-center justify-center font-Poppins cursor-pointer`}
                 onClick={() => setCategory("All")}
               >
@@ -79,7 +79,7 @@ const Page = (props: Props) => {
                     <div
                       className={`h-[35px] ${
                         category === item.title
-                          ? "bg-green-600"
+                          ? "bg-green-500"
                           : "bg-[#00df9a]"
                       } m-3 px-3 rounded-[30px] flex items-center justify-center font-Poppins cursor-pointer`}
                       onClick={() => setCategory(item.title)}

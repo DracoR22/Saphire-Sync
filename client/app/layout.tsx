@@ -11,6 +11,13 @@ import { SessionProvider } from 'next-auth/react'
 import 'react-toastify/dist/ReactToastify.css'
 import { useLoadUserQuery } from '@/redux/features/api/apiSlice'
 import Loader from './components/Loader'
+import { useEffect } from 'react'
+
+// Socket IO
+import socketIO from "socket.io-client";
+const ENDPOINT = process.env.NEXT_PUBLIC_SOCKET_SERVER_URI || "";
+const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
+
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -34,9 +41,11 @@ export default function RootLayout({
       <body className={`${poppins.variable} ${josefin.variable} bg-white bg-no-repeat dark:bg-gradient-to-b dark:from-[#0A1828] dark:to-black duration-300`}>
         <Providers>
           <SessionProvider>
-         <ToastContainer theme="colored" autoClose={3000}/>
+         <ToastContainer theme="dark" autoClose={3000}/>
           <ThemeProvider attribute='class' defaultTheme='dark' enableSystem>
+             <Custom>
              {children}
+             </Custom>
           </ThemeProvider>
           </SessionProvider>
         </Providers>
@@ -48,6 +57,11 @@ export default function RootLayout({
 // Loading State
 const Custom: React.FC<{children: React.ReactNode}> = ({children}) => {
   const {isLoading} = useLoadUserQuery({})
+
+  useEffect(() => {
+    socketId.on("connection", () => {})
+  }, [])
+
   return (
     <>
     {isLoading ? <Loader/> : <>{children}</>}

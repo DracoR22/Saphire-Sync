@@ -2,6 +2,7 @@ import express, { NextFunction, Request, Response } from "express"
 import cors from 'cors'
 import cookieParser from "cookie-parser"
 import { ErrorMiddleware } from './middleware/error'
+import { rateLimit } from 'express-rate-limit'
 
 import userRouter from './routes/user.route'
 import courseRouter from './routes/course.route'
@@ -22,9 +23,17 @@ app.use(cors({
     credentials: true
 }))
 
-// Testing api
+// Testing Api
 app.get("/test", (req: Request, res: Response, next: NextFunction) => {
     res.status(200).json({success: true,  message: "API is working"})
+})
+
+// Limit Api Calls
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000,
+	max: 100, 
+	standardHeaders: 'draft-7', 
+	legacyHeaders: false, 
 })
 
 // Routes
@@ -44,5 +53,6 @@ app.all("*", (req: Request, res: Response, next: NextFunction) => {
 })
 
 // Middleware Calls
+app.use(limiter);
 app.use(ErrorMiddleware)
 
