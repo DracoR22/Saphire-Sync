@@ -29,7 +29,7 @@ const Hero = () => {
     ) : (
       <div>
       <div className="h-screen text-black dark:text-white">
-        <div className="flex justify-center flex-col pt-[50px] px-16">
+        <div className="flex justify-center flex-col pt-[80px] px-16">
             <div className="grid md:grid-cols-2 gap-6">
            <div className="pt-[50px]">
            <h1 className="text-3xl lg:text-4xl xl:text-5xl font-[700]">
