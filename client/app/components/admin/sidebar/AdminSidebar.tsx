@@ -51,7 +51,7 @@ const Sidebar = () => {
   const { user } = useSelector((state: any) => state.auth);
   const [logout, setlogout] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [selected, setSelected] = useState("Dashboard");
+  const [selected, setSelected] = useState("");
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
 
@@ -67,31 +67,31 @@ const Sidebar = () => {
 
   return (
     <Box
-      sx={{
-        "& .pro-sidebar-inner": {
-          background: `${
-            theme === "dark" ? "#0A1828 !important" : "#fff !important"
-          }`,
-        },
-        "& .pro-icon-wrapper": {
-          backgroundColor: "transparent !important",
-        },
-        "& .pro-inner-item:hover": {
-          color: "#00df9a !important",
-        },
-        "& .pro-menu-item.active": {
-          color: "#00df9a !important",
-        },
-        "& .pro-inner-item": {
-          padding: "5px 35px 5px 20px !important",
-          opacity: 1,
-        },
-        "& .pro-menu-item": {
-          color: `${theme !== "dark" && "#000"}`,
-        },
-      }}
-      className="!bg-white dark:bg-[#111C43]"
-    >
+    sx={{
+      "& .pro-sidebar-inner": {
+        background: `${
+          theme === "dark" ? "#111C43 !important" : "#fff !important"
+        }`,
+      },
+      "& .pro-icon-wrapper": {
+        backgroundColor: "transparent !important",
+      },
+      "& .pro-inner-item:hover": {
+        color: "#868dfb !important",
+      },
+      "& .pro-menu-item.active": {
+        color: "#6870fa !important",
+      },
+      "& .pro-inner-item": {
+        padding: "5px 35px 5px 20px !important",
+        opacity: 1,
+      },
+      "& .pro-menu-item": {
+        color: `${theme !== "dark" && "#000"}`,
+      },
+    }}
+    className="!bg-white dark:bg-[#111C43]"
+  >
       <ProSidebar
         collapsed={isCollapsed}
         style={{

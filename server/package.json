@@ -45,6 +45,7 @@
     "typescript": "^5.2.2"
   },
   "devDependencies": {
+    "@flydotio/dockerfile": "^0.4.11",
     "@types/ejs": "^3.1.2",
     "@types/nodemailer": "^6.4.10"
   }
